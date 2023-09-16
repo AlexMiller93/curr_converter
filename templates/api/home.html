@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <div>
+        <form action="" method="post">{% csrf_token %}
+            <div>
+                <label for="amount">Amount</label>
+                <input type="number" name="amount" id="amount">
+            </div>
+            <div>
+                <label for="from-curr">From</label>
+                <select name="from-curr" id="from-curr" class="">
+                    {% for currency in currencies %}
+                        <option value="{{currency}}">{{currency}}</option>
+
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="to-curr">To</label>
+                <select name="to-curr" id="to-curr" class="">
+                    {% for currency in currencies %}
+                        <option value="{{currency}}">{{currency}}</option>
+
+                    {% endfor %}
+                </select>
+            </div>
+
+            {% if result %}
+                <div>
+                    <strong>{{ from_amount}} {{from_curr}} = {{result}} {{to_curr}}</strong>
+                    <p></p>
+
+                </div>
+            {% endif %}
+            <div>
+                <button type="submit">Calculate</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock content%}

@@ -1,22 +1,19 @@
 import requests
-from bs4 import BeautifulSoup
+from django.conf import settings
 
 
-def get_quotes(from_curr: str, to_curr: str):
+def parse_latest_rates():
     """
 
-    :param from_curr:
-    :param to_curr:
     :return:
     """
+    base_url = 'http://data.fixer.io/api/'
+    endpoint = 'latest'
+    access_key = settings.FIXER_API_KEY
 
-    try:
-        # parse currency rate from Fixer
+    url = base_url + endpoint + '?access_key=' + access_key
+    response = requests.get(url).json()
+    currencies = response.get('rates')
+    return currencies
 
-        url = f""
-        response = requests.get(url)
 
-
-        return rate
-    except:
-        return "No valid data"
