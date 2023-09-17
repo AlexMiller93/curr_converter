@@ -21,9 +21,7 @@ currencies = parse_latest_rates()
 
 class HomeView(View):
 
-
     def get(self, request):
-
         context = {
             'currencies': currencies
         }
@@ -33,9 +31,8 @@ class HomeView(View):
     def post(self, request):
         from_curr = request.POST.get('from-curr')
         to_curr = request.POST.get('to-curr')
-        from_amount = int(request.POST.get('amount'))
+        from_amount = request.POST.get('amount')
 
-        # result = round((currencies[from_curr] / currencies[to_curr]) * float(from_amount), 2)
         result = round((currencies[to_curr] / currencies[from_curr]) * float(from_amount), 2)
 
         context = {
@@ -61,22 +58,22 @@ class ConverterView(generics.GenericAPIView):
         """
         currencies = parse_latest_rates()
 
-        # try:
         from_curr = request.GET.get("from", "")
         to_curr = request.GET.get("to", "")
         value = request.GET.get("value", 0)
 
         try:
-            value = int(value)
+            value = float(value)
         except:
             return Response({"error": "Value should be a number"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # if (from_curr and to_curr) not in currencies:
-        #     return Response({"error": "No valid currency"}, status=status.HTTP_400_BAD_REQUEST)
+        if from_curr == to_curr:
+            return Response({"warning": f"You want to convert the same currency - {from_curr}"},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        if from_curr not in currencies or to_curr not in currencies:
+            return Response({"error": "No valid currency"}, status=status.HTTP_400_BAD_REQUEST)
 
         result = round((currencies[to_curr] / currencies[from_curr]) * value, 2)
 
         return Response({"result": result}, status=status.HTTP_200_OK)
-
-        # except Exception as e:
-        #     return Response({"message": str(e)}, status=status.HTTP_400_BAD_REQUEST)
