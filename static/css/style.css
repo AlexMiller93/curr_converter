@@ -6,6 +6,20 @@ body {
 	height: 20rem;
 	width: 100%;
 }
+
+a {
+	color: darkblue;
+	outline: none;
+}
+
+
+
+a:hover{
+	color: gold;
+}
+
+
+
 .card {
 	border-radius: 3rem;
 }
@@ -15,3 +29,4 @@ body {
 	margin-bottom: 1rem; /* Added */
 
 }
+
