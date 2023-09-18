@@ -42,9 +42,13 @@ class HomeView(View):
         # Getting parameters of the request
         from_curr = request.POST.get('from-curr')
         to_curr = request.POST.get('to-curr')
-        from_amount = request.POST.get('amount')
+        try:
+            from_amount = float(request.POST.get('amount'))
+        except:
+            context = {"error": "Value is empty, enter a value"}
+            return render(request, template_name='api/home.html', context=context)
 
-        result = round((currencies[to_curr] / currencies[from_curr]) * float(from_amount), 2)
+        result = round((currencies[to_curr] / currencies[from_curr]) * from_amount, 2)
 
         context = {
             'from_amount': from_amount,
@@ -132,7 +136,8 @@ class ConverterView(APIView):
                             status=status.HTTP_400_BAD_REQUEST)
 
         if from_curr not in currencies or to_curr not in currencies:
-            return Response({"message": "fail", "error": "No valid currency"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "fail", "error": "No valid currency"},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         # calculate the result
         result = round((currencies[to_curr] / currencies[from_curr]) * float(value), 2)

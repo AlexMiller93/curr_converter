@@ -81,7 +81,12 @@
                     {% if result %}
                         <div class="mb-3">
                             <strong>{{from_amount}} {{from_curr}} = {{result}} {{to_curr}}</strong>
+                        </div>
+                    {% endif %}
 
+                    {% if error %}
+                        <div class="mb-3">
+                            <strong>{{ error }}</strong>
                         </div>
                     {% endif %}
                     <div class="mb-1">
